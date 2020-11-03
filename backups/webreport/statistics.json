@@ -1,0 +1,34 @@
+{
+  "获取一条住院信息" : {
+    "transaction" : "获取一条住院信息",
+    "sampleCount" : 10000,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 5107.4358999999995,
+    "medianResTime" : 911.5,
+    "minResTime" : 5.0,
+    "maxResTime" : 78735.0,
+    "pct1ResTime" : 16831.899999999994,
+    "pct2ResTime" : 30005.0,
+    "pct3ResTime" : 39605.97,
+    "throughput" : 48.39966507431769,
+    "receivedKBytesPerSec" : 13.63733352027704,
+    "sentKBytesPerSec" : 34.220075697076176
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 10000,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 5107.4358999999995,
+    "medianResTime" : 911.5,
+    "minResTime" : 5.0,
+    "maxResTime" : 78735.0,
+    "pct1ResTime" : 16831.899999999994,
+    "pct2ResTime" : 30005.0,
+    "pct3ResTime" : 39605.97,
+    "throughput" : 48.39966507431769,
+    "receivedKBytesPerSec" : 13.63733352027704,
+    "sentKBytesPerSec" : 34.220075697076176
+  }
+}

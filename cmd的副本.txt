@@ -1,0 +1,1 @@
+﻿jmeter -n -t D:\Test\线程组.jmx  -l  D:\Test\backups\result.txt -e -o  D:\Test\backups\webreport
