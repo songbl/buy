@@ -168,14 +168,14 @@ public class BuyUtil {
                 }
 
                 System.out.println(mappingList.size());
-//                buy(mappingList.get(0).getKey());
-//                buy(mappingList.get(1).getKey());
-//                buy(mappingList.get(2).getKey());
-//                buy(mappingList.get(3).getKey());
-//                buy(mappingList.get(4).getKey());
-//                buy(mappingList.get(5).getKey());
-//                buy(mappingList.get(6).getKey());
-//                buy(mappingList.get(7).getKey());
+                buy(mappingList.get(0).getKey());
+                buy(mappingList.get(1).getKey());
+                buy(mappingList.get(2).getKey());
+                buy(mappingList.get(3).getKey());
+                buy(mappingList.get(4).getKey());
+                buy(mappingList.get(5).getKey());
+                buy(mappingList.get(6).getKey());
+                buy(mappingList.get(7).getKey());
             }else {
                 System.out.println("排序后 数据是空的....");
             }
