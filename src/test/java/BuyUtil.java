@@ -66,6 +66,7 @@ public class BuyUtil {
         }
     }
 
+    List<Map.Entry<String, Double>> mappingList ;
     private void indexList() {
         try {
             connection = Jsoup.connect("http://agrvip.com/index");
@@ -86,25 +87,70 @@ public class BuyUtil {
                 //开始，可以进入
                 if (categoryBean.isBegin0() || categoryBean.isBegin1()) {
                     System.out.println("可以进入了...");
-//                    try {
-//                        //睡眠1s
-////                        Thread.currentThread().sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        System.out.println("睡眠挂了....");
-//                        e.printStackTrace();
-//                    }
-                    for (int j = 1; j < 4; j++) {
+                    for (int j = 1; j < 6; j++) {
                         System.out.println("第"+j+"页数据...");
                         getGoodsList("http://agrvip.com/shop?pageNo=" + j + "&category_id=" + categoryId + "&area=1",categoryId);
                     }
+
+                    //循环完了，拿到这几页商品的价格了
+
+                    mappingList = new ArrayList<Map.Entry<String, Double>>(sortMap.entrySet());
+                    //4、通过比较器进行比较排序
+                    MapSortUtil.sort(mappingList);
+                    if (mappingList.size()>0){
+                        // 构建指定文件
+                        File file = new File("D:\\"+"sort.txt");
+                        // 根据文件创建文件的输出流
+                        try (OutputStream os = new FileOutputStream(file)) {
+                            String str = null;
+                            for(Map.Entry<String,Double> mapping:mappingList){
+                                str = "排序后的 "+mapping.getKey()+":"+mapping.getValue()+"\n";
+                                // 把内容转换成字节数组
+                                byte[] data = str.getBytes();
+                                // 向文件写入内容
+                                os.write(data);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        for(Map.Entry<String,Double> mapping:mappingList){
+                            System.out.println("排序后的 "+mapping.getKey()+"  :  "+mapping.getValue());
+                        }
+
+                        System.out.println(mappingList.size());
+                        if(mappingList.get(0).getValue()<1200){
+                            buy(mappingList.get(0).getKey());
+                        }
+                        if(mappingList.get(1).getValue()<1200){
+                            buy(mappingList.get(1).getKey());
+                        }
+                        if(mappingList.get(2).getValue()<1200){
+                            buy(mappingList.get(2).getKey());
+                        }
+                        if(mappingList.get(3).getValue()<1200){
+                            buy(mappingList.get(3).getKey());
+                        }
+                        if(mappingList.get(4).getValue()<1200){
+                            buy(mappingList.get(4).getKey());
+                        }
+
+//                buy(mappingList.get(0).getKey());
+//                buy(mappingList.get(1).getKey());
+//                buy(mappingList.get(2).getKey());
+//                buy(mappingList.get(3).getKey());
+//                buy(mappingList.get(4).getKey());
+//                buy(mappingList.get(5).getKey());
+//                buy(mappingList.get(6).getKey());
+//                buy(mappingList.get(7).getKey());
+                    }else {
+                        System.out.println("排序后 数据是空的....");
+                    }
+
                 } else {
                     System.out.println("时间不到，不能进入列表页"+categoryBean.getId());
                 }
 
-//                System.out.println(categoryBean.getId()+"类别");
-//                if (!categoryBean.isYuyue1()){
-//                    appoint(categoryBean.getId()+"");
-//                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,50 +182,8 @@ public class BuyUtil {
                 if (goodsList.getResult().getList().get(i).isClick()){
                     goodsDetails("http://agrvip.com/shop/goodsDetails?id=" + goodsId);
                 }
-                goodsDetails("http://agrvip.com/shop/goodsDetails?id=" + goodsId);
-//                if(i/3==0){
-//                    //有了id，可以直接购买
-////                    buy(goodsId+"");
-//                }
+//                goodsDetails("http://agrvip.com/shop/goodsDetails?id=" + goodsId);
             }
-            List<Map.Entry<String, Double>> mappingList =
-                    new ArrayList<Map.Entry<String, Double>>(sortMap.entrySet());
-            //4、通过比较器进行比较排序
-            MapSortUtil.sort(mappingList);
-            if (mappingList.size()>0){
-                // 构建指定文件
-                File file = new File("D:\\"+categoryId+".txt");
-                // 根据文件创建文件的输出流
-                try (OutputStream os = new FileOutputStream(file)) {
-                    String str = null;
-                    for(Map.Entry<String,Double> mapping:mappingList){
-                        str = "排序后的 "+mapping.getKey()+":"+mapping.getValue()+"\n";
-                        // 把内容转换成字节数组
-                        byte[] data = str.getBytes();
-                        // 向文件写入内容
-                        os.write(data);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                for(Map.Entry<String,Double> mapping:mappingList){
-                    System.out.println("排序后的 "+mapping.getKey()+"  :  "+mapping.getValue());
-                }
-
-                System.out.println(mappingList.size());
-                buy(mappingList.get(0).getKey());
-                buy(mappingList.get(1).getKey());
-                buy(mappingList.get(2).getKey());
-                buy(mappingList.get(3).getKey());
-                buy(mappingList.get(4).getKey());
-                buy(mappingList.get(5).getKey());
-                buy(mappingList.get(6).getKey());
-                buy(mappingList.get(7).getKey());
-            }else {
-                System.out.println("排序后 数据是空的....");
-            }
-
 
 
         } catch (IOException e) {
@@ -207,11 +211,7 @@ public class BuyUtil {
             int id = goodsDetails.getResult().getId();
             System.out.println("商品的id " + id + " 商品的价格" + priceDouble);
 
-//            if (priceDouble < 700) {
-//                buy(id +"");
-//                return;
-//            }
-//            Map<String, Double> stu = new HashMap<>();
+
             sortMap.put(id + "", priceDouble);
 
 
@@ -236,6 +236,7 @@ public class BuyUtil {
 
             Gson gson = new Gson();
             BuyBean buyBean = gson.fromJson(response.body(), BuyBean.class);
+            System.out.println("购买情况 "+buyBean.toString());
 
             // 构建指定文件
             File file = new File("D:\\hello" + goodsId + ".txt");
@@ -250,15 +251,16 @@ public class BuyUtil {
                 e.printStackTrace();
             }
 
+            String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()+"==="+buyBean.toString());
 
             //todo 看看抢购成功返回的啥
             if (buyBean.getMessage().equals("您还有未完成的订单")) {
+                System.out.println("已经抢到，有未支付的订单...");
                 return;
             }
-            String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());
-
             if (buyBean.getMessage().equals("订单不存在")) {
                 try {
+//                    mappingList.remove(0);
                     //睡眠1s
                     Thread.currentThread().sleep(2000);
                     System.out.println("订单不存在"+format);
@@ -267,10 +269,6 @@ public class BuyUtil {
                     e.printStackTrace();
                 }
             }
-
-            JSONObject jsonObject = JSONObject.fromObject(response.body());
-            //您还有未完成的订单
-            System.out.println(jsonObject);
 
         } catch (IOException e) {
             e.printStackTrace();
