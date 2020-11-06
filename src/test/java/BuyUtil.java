@@ -79,7 +79,7 @@ public class BuyUtil {
             IndexBean indexBean = gson.fromJson(response.body(), IndexBean.class);
             List<IndexBean.ResultBean.CategoryBean> categoryList = indexBean.getResult().getCategory();
             //其实一共就2个，所有可以写死2，要不还遍历另外哪俩，不合适
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 4; i++) {
                 IndexBean.ResultBean.CategoryBean categoryBean = categoryList.get(i);
                 System.out.println("CategoryBean " + categoryBean.toString());
                 String categoryId = categoryBean.getId() + "";
@@ -87,7 +87,7 @@ public class BuyUtil {
                 //开始，可以进入
                 if (categoryBean.isBegin0() || categoryBean.isBegin1()) {
                     System.out.println("可以进入了...");
-                    for (int j = 1; j < 3; j++) {
+                    for (int j = 1; j < 2; j++) {
                         System.out.println("第"+j+"页数据...");
                         getGoodsList("http://agrvip.com/shop?pageNo=" + j + "&category_id=" + categoryId + "&area=1",categoryId);
                     }
@@ -212,9 +212,10 @@ public class BuyUtil {
             System.out.println("商品的id " + id + " 商品的价格" + priceDouble);
 
 
-            sortMap.put(id + "", priceDouble);
-            System.out.println("加入 "+id +" 价格 "+priceDouble);
-
+            if(priceDouble>100) {
+                sortMap.put(id + "", priceDouble);
+                System.out.println("加入 " + id + " 价格 " + priceDouble);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -237,7 +238,7 @@ public class BuyUtil {
 
             Gson gson = new Gson();
             BuyBean buyBean = gson.fromJson(response.body(), BuyBean.class);
-            System.out.println("购买情况 "+buyBean.toString());
+            System.out.println("购买情况 "+goodsId+buyBean.toString()+goodsId);
 
             // 构建指定文件
             File file = new File("D:\\hello" + goodsId + ".txt");
@@ -263,8 +264,9 @@ public class BuyUtil {
                 try {
 //                    mappingList.remove(0);
                     //睡眠1s
-                    Thread.currentThread().sleep(2000);
+//                    Thread.currentThread().sleep(2000);
 //                    System.out.println("订单不存在"+format);
+                    return;
 
                 } catch (Exception e) {
                     System.out.println("睡眠挂了....");
