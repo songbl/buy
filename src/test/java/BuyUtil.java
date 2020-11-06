@@ -87,7 +87,7 @@ public class BuyUtil {
                 //开始，可以进入
                 if (categoryBean.isBegin0() || categoryBean.isBegin1()) {
                     System.out.println("可以进入了...");
-                    for (int j = 1; j < 6; j++) {
+                    for (int j = 1; j < 3; j++) {
                         System.out.println("第"+j+"页数据...");
                         getGoodsList("http://agrvip.com/shop?pageNo=" + j + "&category_id=" + categoryId + "&area=1",categoryId);
                     }
@@ -97,6 +97,7 @@ public class BuyUtil {
                     mappingList = new ArrayList<Map.Entry<String, Double>>(sortMap.entrySet());
                     //4、通过比较器进行比较排序
                     MapSortUtil.sort(mappingList);
+                    System.out.println("列表长度 "+ mappingList.size());
                     if (mappingList.size()>0){
                         // 构建指定文件
                         File file = new File("D:\\"+"sort.txt");
@@ -146,7 +147,6 @@ public class BuyUtil {
                     }else {
                         System.out.println("排序后 数据是空的....");
                     }
-
                 } else {
                     System.out.println("时间不到，不能进入列表页"+categoryBean.getId());
                 }
@@ -213,6 +213,7 @@ public class BuyUtil {
 
 
             sortMap.put(id + "", priceDouble);
+            System.out.println("加入 "+id +" 价格 "+priceDouble);
 
 
         } catch (IOException e) {
@@ -251,7 +252,7 @@ public class BuyUtil {
                 e.printStackTrace();
             }
 
-            String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()+"==="+buyBean.toString());
+//            String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());
 
             //todo 看看抢购成功返回的啥
             if (buyBean.getMessage().equals("您还有未完成的订单")) {
@@ -263,7 +264,8 @@ public class BuyUtil {
 //                    mappingList.remove(0);
                     //睡眠1s
                     Thread.currentThread().sleep(2000);
-                    System.out.println("订单不存在"+format);
+//                    System.out.println("订单不存在"+format);
+
                 } catch (Exception e) {
                     System.out.println("睡眠挂了....");
                     e.printStackTrace();
